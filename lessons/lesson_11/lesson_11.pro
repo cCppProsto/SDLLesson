@@ -4,11 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        ltexture.cpp \
-        main.cpp
-
+        main.cpp \
+        texturesprite.cpp
 
 HEADERS += \
-  ltexture.hpp
+  texturesprite.hpp
 
 LIBS += -lSDL2 -lSDL2_image
