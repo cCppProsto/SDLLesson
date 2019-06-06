@@ -81,13 +81,13 @@ int main( int argc, char* args[] )
         }
 
         //Clear screen
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
         SDL_RenderClear( gRenderer );
 
         static size_t frame{0};
         static int x{600};
         static int y{200};
-        static int dx{-1};
+        static int dx{-2};
         static int dy{0};
 
         //Render background texture to screen
