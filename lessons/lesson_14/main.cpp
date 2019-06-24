@@ -1,7 +1,7 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2019)
 and may not be redistributed without written permission.*/
 
-// https://lazyfoo.net/tutorials/SDL/11_clip_rendering_and_sprite_sheets/index.php
+// https://lazyfoo.net/tutorials/SDL/14_animated_sprites_and_vsync/index.php
 
 #include <stdio.h>
 #include <string>
@@ -11,8 +11,7 @@ and may not be redistributed without written permission.*/
 
 #include "texturesprite.hpp"
 
-const char *gTitle = "SDL Lesson 11";
-
+const char *gTitle = "SDL Lesson 14";
 
 //------------------------------------------------------------------------------
 static SDL_Window* gWindow{ nullptr };            // The window we'll be rendering to
@@ -109,7 +108,7 @@ int main( int argc, char* args[] )
         if(y >= SCREEN_HEIGHT || y <= 0)
           dy *= -1;
 
-        SDL_Delay(33);
+        //SDL_Delay(66);
       }
     }
   }
@@ -151,7 +150,7 @@ bool init()
     else
     {
       //Create renderer for window
-      gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED);
+      gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
       if( gRenderer == nullptr )
       {
         printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );

@@ -1,7 +1,7 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2019)
 and may not be redistributed without written permission.*/
 
-// https://lazyfoo.net/tutorials/SDL/11_clip_rendering_and_sprite_sheets/index.php
+// http://lazyfoo.net/tutorials/SDL/15_rotation_and_flipping/index.php
 
 #include <stdio.h>
 #include <string>
@@ -9,10 +9,9 @@ and may not be redistributed without written permission.*/
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "texturesprite.hpp"
+#include "texture.hpp"
 
-const char *gTitle = "SDL Lesson 11";
-
+const char *gTitle = "SDL Lesson 15";
 
 //------------------------------------------------------------------------------
 static SDL_Window* gWindow{ nullptr };            // The window we'll be rendering to
@@ -23,7 +22,9 @@ constexpr int SCREEN_WIDTH { 800 };
 constexpr int SCREEN_HEIGHT{ 800 };
 
 //Scene textures
-static TextureSprite gZombieTexture;
+static Texture gCompasTexture;
+static Texture gArrowTexture;
+static Texture gSoldierTexture;
 //------------------------------------------------------------------------------
 bool init();
 bool loadMedia();
@@ -56,6 +57,12 @@ int main( int argc, char* args[] )
       //Event handler
       SDL_Event e;
 
+      //Angle of rotation
+      double degrees = 0;
+
+      //Flip type
+      int flipType = SDL_FLIP_NONE;
+
       //While application is running
       while( !quit )
       {
@@ -76,40 +83,62 @@ int main( int argc, char* args[] )
                 quit = true;
                 break;
               }
+              case SDLK_a:
+              {
+                degrees -= 7;
+                break;
+              }
+              case SDLK_d:
+              {
+                degrees += 7;
+                break;
+              }
+              case SDLK_q:
+              {
+                flipType = SDL_FLIP_HORIZONTAL;
+                break;
+              }
+              case SDLK_w:
+              {
+                flipType = SDL_FLIP_NONE;
+                break;
+              }
+              case SDLK_e:
+              {
+                flipType = SDL_FLIP_VERTICAL;
+                break;
+              }
+              case SDLK_r:
+              {
+                flipType = SDL_FLIP_VERTICAL | SDL_FLIP_HORIZONTAL;
+                break;
+              }
             }
           }
         }
 
         //Clear screen
-        SDL_SetRenderDrawColor( gRenderer, 0xF0, 0x0F, 0xF0, 0xFF );
+        SDL_SetRenderDrawColor( gRenderer, 0xF0, 0xFF, 0xF0, 0xFF );
         SDL_RenderClear( gRenderer );
 
-        static size_t frame{0};
-        static int x{600};
-        static int y{200};
-        static int dx{-2};
-        static int dy{0};
-
         //Render background texture to screen
-        gZombieTexture.render( x, y, frame);
+        gCompasTexture.render(( SCREEN_WIDTH - gArrowTexture.getWidth() ) / 2,
+                              ( SCREEN_HEIGHT - gArrowTexture.getHeight() ) / 2);
+
+        gArrowTexture.render( ( SCREEN_WIDTH - gArrowTexture.getWidth() ) / 2,
+                              ( SCREEN_HEIGHT - gArrowTexture.getHeight() ) / 2,
+                              nullptr,
+                              degrees);
+
+        gSoldierTexture.render( 0,
+                                0,
+                                nullptr,
+                                0.0,
+                                nullptr,
+                                (SDL_RendererFlip)flipType );
 
         //Update screen
         SDL_RenderPresent( gRenderer );
-
-        frame++;
-        if(frame >= gZombieTexture.frameCount())
-          frame = 0;
-
-        x += dx;
-        y += dy;
-
-        if(x >= SCREEN_WIDTH || x <= 0)
-          dx *= -1;
-
-        if(y >= SCREEN_HEIGHT || y <= 0)
-          dy *= -1;
-
-        SDL_Delay(33);
       }
     }
   }
@@ -151,7 +180,7 @@ bool init()
     else
     {
       //Create renderer for window
-      gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED);
+      gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
       if( gRenderer == nullptr )
       {
         printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -172,7 +201,9 @@ bool init()
       }
     }
   }
-  gZombieTexture.setRenderer(gRenderer);
+  gArrowTexture.setRenderer(gRenderer);
+  gCompasTexture.setRenderer(gRenderer);
+  gSoldierTexture.setRenderer(gRenderer);
 
   return success;
 }
@@ -181,19 +212,31 @@ bool loadMedia()
 {
   bool success = true;
 
-  if( !gZombieTexture.loadFromFile( "pics/zombie_moving.png", 16 ) )
+  if( !gArrowTexture.loadFromFile( "pics/arrow.png" ) )
   {
     printf( "Failed to load Foo' texture image!\n" );
     success = false;
   }
 
+  if( !gCompasTexture.loadFromFile( "pics/compass.png" ) )
+  {
+    printf( "Failed to load Foo' texture image!\n" );
+    success = false;
+  }
+
+  if( !gSoldierTexture.loadFromFile( "pics/soldier.png" ) )
+  {
+    printf( "Failed to load Foo' texture image!\n" );
+    success = false;
+  }
   return success;
 }
 //------------------------------------------------------------------------------
 void close()
 {
   //Free loaded images
-  gZombieTexture.free();
+  gArrowTexture.free();
+  gCompasTexture.free();
 
   //Destroy window
   SDL_DestroyRenderer( gRenderer );

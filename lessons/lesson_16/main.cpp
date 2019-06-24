@@ -1,7 +1,7 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2019)
 and may not be redistributed without written permission.*/
 
-// https://lazyfoo.net/tutorials/SDL/11_clip_rendering_and_sprite_sheets/index.php
+// http://lazyfoo.net/tutorials/SDL/16_true_type_fonts/index.php
 
 #include <stdio.h>
 #include <string>
@@ -11,8 +11,7 @@ and may not be redistributed without written permission.*/
 
 #include "texturesprite.hpp"
 
-const char *gTitle = "SDL Lesson 11";
-
+const char *gTitle = "SDL Lesson 14";
 
 //------------------------------------------------------------------------------
 static SDL_Window* gWindow{ nullptr };            // The window we'll be rendering to
@@ -109,7 +108,7 @@ int main( int argc, char* args[] )
         if(y >= SCREEN_HEIGHT || y <= 0)
           dy *= -1;
 
-        SDL_Delay(33);
+        //SDL_Delay(66);
       }
     }
   }
@@ -119,15 +118,11 @@ int main( int argc, char* args[] )
 
   return 0;
 }
-
-
 //------------------------------------------------------------------------------
 bool init()
 {
-  //Initialization flag
   bool success = true;
 
-  //Initialize SDL
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
   {
     printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
@@ -135,7 +130,6 @@ bool init()
   }
   else
   {
-    //Create window
     gWindow = SDL_CreateWindow( gTitle,
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
@@ -150,8 +144,7 @@ bool init()
     }
     else
     {
-      //Create renderer for window
-      gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED);
+      gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
       if( gRenderer == nullptr )
       {
         printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -159,14 +152,17 @@ bool init()
       }
       else
       {
-        //Initialize renderer color
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
-        //Initialize PNG loading
         int imgFlags = IMG_INIT_PNG;
         if( !( IMG_Init( imgFlags ) & imgFlags ) )
         {
           printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+          success = false;
+        }
+        if( TTF_Init() == -1 )
+        {
+          printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
           success = false;
         }
       }
