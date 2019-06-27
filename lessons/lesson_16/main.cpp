@@ -10,8 +10,9 @@ and may not be redistributed without written permission.*/
 #include <SDL2/SDL_image.h>
 
 #include "texturesprite.hpp"
+#include "texturetext.hpp"
 
-const char *gTitle = "SDL Lesson 14";
+const char *gTitle = "SDL Lesson 16";
 
 //------------------------------------------------------------------------------
 static SDL_Window* gWindow{ nullptr };            // The window we'll be rendering to
@@ -23,6 +24,8 @@ constexpr int SCREEN_HEIGHT{ 800 };
 
 //Scene textures
 static TextureSprite gZombieTexture;
+static texturetext gText_1;
+static texturetext gText_2;
 //------------------------------------------------------------------------------
 bool init();
 bool loadMedia();
@@ -80,7 +83,7 @@ int main( int argc, char* args[] )
         }
 
         //Clear screen
-        SDL_SetRenderDrawColor( gRenderer, 0xF0, 0x0F, 0xF0, 0xFF );
+        //SDL_SetRenderDrawColor( gRenderer, 0xF0, 0x0F, 0xF0, 0xFF );
         SDL_RenderClear( gRenderer );
 
         static size_t frame{0};
@@ -91,6 +94,15 @@ int main( int argc, char* args[] )
 
         //Render background texture to screen
         gZombieTexture.render( x, y, frame);
+
+        static Uint8 alpha{0};
+        static int alpha_d{1};
+        static double angle{0};
+        gText_1.setAlpha(alpha);
+        gText_1.render(100, 100, nullptr, angle);
+
+        gText_2.setAlpha(255 - alpha);
+        gText_2.render(400, 100, nullptr, 360.0 - angle);
 
         //Update screen
         SDL_RenderPresent( gRenderer );
@@ -108,7 +120,15 @@ int main( int argc, char* args[] )
         if(y >= SCREEN_HEIGHT || y <= 0)
           dy *= -1;
 
-        //SDL_Delay(66);
+        alpha+=alpha_d;
+        if(alpha >= 255)
+          alpha_d = -1;
+        else if(alpha == 0)
+          alpha_d = 1;
+
+        angle++;
+        if(angle >= 360.)
+          angle = 0.0;
       }
     }
   }
@@ -118,6 +138,8 @@ int main( int argc, char* args[] )
 
   return 0;
 }
+
+
 //------------------------------------------------------------------------------
 bool init()
 {
@@ -130,6 +152,11 @@ bool init()
   }
   else
   {
+    if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
+    {
+      printf( "Warning: Linear texture filtering not enabled!" );
+    }
+
     gWindow = SDL_CreateWindow( gTitle,
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
@@ -152,6 +179,15 @@ bool init()
       }
       else
       {
+        if(!TTF_WasInit())
+        {
+          if( TTF_Init() < 0 )
+          {
+            printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+            success = false;
+          }
+        }
+
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
         int imgFlags = IMG_INIT_PNG;
@@ -160,15 +196,13 @@ bool init()
           printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
           success = false;
         }
-        if( TTF_Init() == -1 )
-        {
-          printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
-          success = false;
-        }
       }
     }
   }
   gZombieTexture.setRenderer(gRenderer);
+
+  gText_1.setRenderer(gRenderer);
+  gText_2.setRenderer(gRenderer);
 
   return success;
 }
@@ -176,6 +210,15 @@ bool init()
 bool loadMedia()
 {
   bool success = true;
+
+  if(!gText_1.loadFont("fonts/comicate.ttf", 38))
+    success = false;
+
+  if(!gText_2.loadFont("fonts/contrast.ttf", 46))
+    success = false;
+
+  gText_1.setText("TTF font");
+  gText_2.setText("EXAMPLE");
 
   if( !gZombieTexture.loadFromFile( "pics/zombie_moving.png", 16 ) )
   {
@@ -198,6 +241,7 @@ void close()
   gRenderer = nullptr;
 
   //Quit SDL subsystems
+  TTF_Quit();
   IMG_Quit();
   SDL_Quit();
 }

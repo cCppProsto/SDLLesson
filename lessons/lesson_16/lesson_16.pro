@@ -13,4 +13,4 @@ HEADERS += \
   texturetext.hpp
 
 
-LIBS += -lSDL2 -lSDL2_image -lSDL_ttf
+LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf
