@@ -1,5 +1,5 @@
-#include <SDL_ttf.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 
 #include "renderer.hpp"
 
@@ -191,7 +191,7 @@ void renderer::_event_handle()
         break;
       }
     }
-    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
     if (currentKeyStates[SDL_SCANCODE_SPACE])
     { 
       m_goblin.attack();

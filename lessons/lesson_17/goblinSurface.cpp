@@ -1,4 +1,4 @@
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 #include "goblinSurface.hpp"
 #include "renderer.hpp"
@@ -30,6 +30,7 @@ goblinSurface::goblinSurface()
 //------------------------------------------------------------------------------
 goblinSurface::~goblinSurface()
 {
+  _free();
 }
 //------------------------------------------------------------------------------
 void goblinSurface::handleEvent(SDL_Event &aEvent)
@@ -309,7 +310,8 @@ const size_t &goblinSurface::height()const
 //------------------------------------------------------------------------------
 void goblinSurface::_free()
 {
-  SDL_DestroyTexture(mp_texture);
+  if(mp_texture != nullptr)
+    SDL_DestroyTexture(mp_texture);
   mp_texture = nullptr;
   m_width = 0;
   m_height = 0;

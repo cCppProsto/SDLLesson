@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <SDL2/SDL.h>
 
 class goblinSurface 
 {
@@ -76,7 +77,7 @@ private:
 
   SDL_Rect *mp_current_rect{ nullptr };
 
-  SDL_Texture* mp_texture;
+  SDL_Texture* mp_texture{nullptr};
 
   std::vector< std::vector<SDL_Rect> > mv_sprite_rects;
 };

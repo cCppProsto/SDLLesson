@@ -3,15 +3,14 @@
 
 #include "renderer.hpp"
 
-//  angle = atan2(mouseY - knobCenterY, mouseX - knobCenterX)
-int main(int argc, char* args[])
+int main()
 {
   renderer render(800,800,"lesson 17");
 
   if (!render.init())
     return 0;
 
-  render.setBackgroundColor(55, 10, 25);
+  render.setBackgroundColor(100, 100, 75);
   render.run();
   
   return 0;

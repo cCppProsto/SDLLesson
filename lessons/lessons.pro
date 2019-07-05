@@ -9,6 +9,7 @@ SUBDIRS += \
     lesson_14 \
     lesson_15 \
     lesson_16 \
+    lesson_17 \
     lesson_2 \
     lesson_3 \
     lesson_4 \
