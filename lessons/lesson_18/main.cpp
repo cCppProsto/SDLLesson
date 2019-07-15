@@ -1,11 +1,15 @@
-#include <iostream>
+#include <stdio.h>
+#include <string>
 
-#include "sdlengine.hpp"
+#include "application.hpp"
+#include "SDLEngine.hpp"
 
-using namespace std;
-
-int main()
+int main(int argc, char* args[])
 {
+  SDLEngine::setGeometry(800, 800);
+  SDLEngine::instance();
+  SDLEngine::instance().createWindow();
+  application::instace().run();
 
   return 0;
 }
