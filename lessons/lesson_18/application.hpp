@@ -22,6 +22,8 @@ private:
   application();
   ~application();
 
+  void _init_sdl_from_settings();
+
   void _handle_events();
   void _process();
   void _draw();

@@ -32,6 +32,7 @@ public:
 
 private:
   void _init_text();
+  void _load_sound();
   void _change_state();
 
 private:
@@ -40,9 +41,8 @@ private:
 
   bool m_is_start{ false };
   bool m_is_exit{false};
-  bool m_is_selected{ false };
-  
-  eItem m_current_item{ eItem::Start};
+  bool m_is_high_level{ true };
+  eItem m_current_item{ eItem::Start };
 
   menuSettings m_settings_page;
 

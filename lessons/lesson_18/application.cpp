@@ -1,5 +1,6 @@
 #include "application.hpp"
 
+#include "settings.hpp"
 #include "SDLEngine.hpp"
 
 //------------------------------------------------------------------------------
@@ -23,6 +24,8 @@ void application::run()
   if (!SDLEngine::instance().isInited())
     m_is_run = false;
 
+  _init_sdl_from_settings();
+
   while (m_is_run)
   {
     _handle_events();
@@ -31,6 +34,11 @@ void application::run()
 
     _draw();
   }
+}
+//------------------------------------------------------------------------------
+void application::_init_sdl_from_settings()
+{
+  SDLEngine::instance().setAudioVolume(settings::instance().audioLevel());
 }
 //------------------------------------------------------------------------------
 void application::_handle_events()

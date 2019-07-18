@@ -55,41 +55,45 @@ void menuSettings::process()
 //------------------------------------------------------------------------------
 void menuSettings::handle_keyboard_event(const SDL_KeyboardEvent &aEvent)
 {
+  const auto &_sdl{ SDLEngine::instance() };
+
   switch (aEvent.state)
   {
-  case SDL_RELEASED:
-  {
-    switch (aEvent.keysym.sym)
+    case SDL_RELEASED:
     {
-    case SDLK_ESCAPE:
-    {
-      m_is_exit = true;
-      break;
-    }
-    case SDLK_DOWN:
-    {
-      _unselect_current_item();
-      --m_current_item;
-      _select_current_item();
-      break;
-    }
-    case SDLK_UP:
-    {
-      _unselect_current_item();
-      ++m_current_item;
-      _select_current_item();
-      break;
-    }
-    case SDLK_RIGHT:
-    {
-      _right_keyboard_key_handle();
-      break;
-    }
-    case SDLK_LEFT:
-    {
-      _left_keyboard_key_handle();
-      break;
-    }
+      switch (aEvent.keysym.sym)
+      {
+      case SDLK_ESCAPE:
+      {
+        m_is_active = false;
+        break;
+      }
+      case SDLK_DOWN:
+      {
+        _sdl.play_menu_item_change();
+        _unselect_current_item();
+        --m_current_item;
+        _select_current_item();
+        break;
+      }
+      case SDLK_UP:
+      {
+        _sdl.play_menu_item_change();
+        _unselect_current_item();
+        ++m_current_item;
+        _select_current_item();
+        break;
+      }
+      case SDLK_RIGHT:
+      {
+        _right_keyboard_key_handle();
+        break;
+      }
+      case SDLK_LEFT:
+      {
+        _left_keyboard_key_handle();
+        break;
+      }
     }
     break;
   }
@@ -98,12 +102,12 @@ void menuSettings::handle_keyboard_event(const SDL_KeyboardEvent &aEvent)
 //------------------------------------------------------------------------------
 void menuSettings::init()
 {
-  m_is_exit = false;
+  m_is_active = true;
 }
 //------------------------------------------------------------------------------
-const bool &menuSettings::isExit()const
+const bool &menuSettings::isActive()const
 {
-  return m_is_exit;
+  return m_is_active;
 }
 //------------------------------------------------------------------------------
 void menuSettings::_init()
@@ -111,12 +115,12 @@ void menuSettings::_init()
   auto &sdl_inst{ SDLEngine::instance() };
   mv_items.resize(2);
 
-  mv_items[0].loadFont("font/a_Albionic.ttf", 25);
+  mv_items[0].loadFont("resources/fonts/a_Albionic.ttf", 25);
   mv_items[0].setColor(255, 0, 0);
   mv_items[0].setText(u8"разрешение экрана");
   mv_items[0].setAlpha(m_alpha_selected);
 
-  mv_items[1].loadFont("font/a_Albionic.ttf", 25);
+  mv_items[1].loadFont("resources/fonts/a_Albionic.ttf", 25);
   mv_items[1].setColor(255, 0, 0);
   mv_items[1].setText(u8"уровень звука");
   mv_items[1].setAlpha(m_alpha_unselected);
@@ -139,7 +143,7 @@ void menuSettings::_init_resolution_items()
 
   mv_resolutions_items.resize(3);
   {
-    mv_resolutions_items[0].loadFont("font/a_Albionic.ttf", 25);
+    mv_resolutions_items[0].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_resolutions_items[0].setColor(255, 0, 0);
     mv_resolutions_items[0].setText(u8"640x480");
     mv_resolutions_items[0].setAlpha(m_alpha_unselected);
@@ -148,7 +152,7 @@ void menuSettings::_init_resolution_items()
   }
 
   {
-    mv_resolutions_items[1].loadFont("font/a_Albionic.ttf", 25);
+    mv_resolutions_items[1].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_resolutions_items[1].setColor(255, 0, 0);
     mv_resolutions_items[1].setText(u8"800x600");
     mv_resolutions_items[1].setAlpha(m_alpha_unselected);
@@ -157,7 +161,7 @@ void menuSettings::_init_resolution_items()
   }
 
   {
-    mv_resolutions_items[2].loadFont("font/a_Albionic.ttf", 25);
+    mv_resolutions_items[2].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_resolutions_items[2].setColor(255, 0, 0);
     mv_resolutions_items[2].setText(u8"1920x1080");
     mv_resolutions_items[2].setAlpha(m_alpha_unselected);
@@ -174,7 +178,7 @@ void menuSettings::_init_audio_level_items()
   mv_audio_levels_items.resize(11);
   size_t index{ 0 };
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"0   %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -184,7 +188,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"10  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -194,7 +198,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"20  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -204,7 +208,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"30  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -214,7 +218,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"40  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -224,7 +228,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"50  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -234,7 +238,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"60  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -244,7 +248,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"70  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -254,7 +258,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"80  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -264,7 +268,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"90  %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -274,7 +278,7 @@ void menuSettings::_init_audio_level_items()
   }
 
   {
-    mv_audio_levels_items[index].loadFont("font/a_Albionic.ttf", 25);
+    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
     mv_audio_levels_items[index].setColor(255, 0, 0);
     mv_audio_levels_items[index].setText(u8"100 %");
     mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
@@ -299,6 +303,7 @@ void menuSettings::_select_current_item()
 void menuSettings::_right_keyboard_key_handle()
 {
   auto &stg{ settings::instance() };
+  auto &sdl{ SDLEngine::instance() };
   switch (m_current_item)
   {
     case eItem::VideoResolution:
@@ -309,6 +314,8 @@ void menuSettings::_right_keyboard_key_handle()
     case eItem::AudioLevel:
     {
       stg.setNextAudioLevel();
+      sdl.setAudioVolume(stg.audioLevel());
+      sdl.play_menu_settings_change_audio_level();
       break;
     }
   }
@@ -317,6 +324,7 @@ void menuSettings::_right_keyboard_key_handle()
 void menuSettings::_left_keyboard_key_handle()
 {
   auto &stg{ settings::instance() };
+  auto &sdl{ SDLEngine::instance() };
   switch (m_current_item)
   {
     case eItem::VideoResolution:
@@ -327,6 +335,8 @@ void menuSettings::_left_keyboard_key_handle()
     case eItem::AudioLevel:
     {
       stg.setPrevAudioLevel();
+      sdl.setAudioVolume(stg.audioLevel());
+      sdl.play_menu_settings_change_audio_level();
       break;
     }
   }

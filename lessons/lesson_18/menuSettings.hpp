@@ -26,7 +26,7 @@ public:
   void handle_keyboard_event(const SDL_KeyboardEvent &aEvent);
 
   void init();
-  const bool &isExit()const;
+  const bool &isActive()const;
 
 private:
   void _init();
@@ -49,7 +49,7 @@ private:
   void _update_resolution_select();
 
 private:
-  bool m_is_exit{ false };
+  bool m_is_active{ false };
 
   Uint8 m_alpha_selected{ 255 };
   Uint8 m_alpha_unselected{ 80 };
