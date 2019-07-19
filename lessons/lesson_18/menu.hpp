@@ -2,9 +2,9 @@
 #define _MENU_HPP_
 
 #include <vector>
-#include <SDL_events.h>
+#include <SDL2/SDL_events.h>
 
-#include "TextureText.hpp"
+#include "texturetext.hpp"
 #include "menuSettings.hpp"
 
 class menu

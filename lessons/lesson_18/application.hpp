@@ -1,7 +1,7 @@
 #ifndef _APPLICATION_HPP_
 #define _APPLICATION_HPP_
 
-#include <SDL_events.h>
+#include <SDL2/SDL_events.h>
 
 #include "menu.hpp"
 

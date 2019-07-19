@@ -1,6 +1,6 @@
 
-#include "SDLEngine.hpp"
-#include "TextureText.hpp"
+#include "sdlengine.hpp"
+#include "texturetext.hpp"
 
 //------------------------------------------------------------------------------
 TextureText::TextureText()

@@ -4,11 +4,21 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        application.cpp \
         main.cpp \
-        sdlengine.cpp
+        menu.cpp \
+        menuSettings.cpp \
+        sdlengine.cpp \
+        settings.cpp \
+        texturetext.cpp
 
 HEADERS += \
-  sdlengine.hpp
+  application.hpp \
+  menu.hpp \
+  menuSettings.hpp \
+  sdlengine.hpp \
+  settings.hpp \
+  texturetext.hpp
 
 
-LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf
+LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer

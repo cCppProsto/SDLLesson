@@ -1,4 +1,4 @@
-#include "SDLEngine.hpp"
+#include "sdlengine.hpp"
 
 #include "settings.hpp"
 #include "menuSettings.hpp"
@@ -117,12 +117,12 @@ void menuSettings::_init()
 
   mv_items[0].loadFont("resources/fonts/a_Albionic.ttf", 25);
   mv_items[0].setColor(255, 0, 0);
-  mv_items[0].setText(u8"разрешение экрана");
+  mv_items[0].setText(u8"СЂР°Р·СЂРµС€РµРЅРёРµ СЌРєСЂР°РЅР°");
   mv_items[0].setAlpha(m_alpha_selected);
 
   mv_items[1].loadFont("resources/fonts/a_Albionic.ttf", 25);
   mv_items[1].setColor(255, 0, 0);
-  mv_items[1].setText(u8"уровень звука");
+  mv_items[1].setText(u8"СѓСЂРѕРІРµРЅСЊ Р·РІСѓРєР°");
   mv_items[1].setAlpha(m_alpha_unselected);
 
   int y = sdl_inst.windowHeight() * 0.4;

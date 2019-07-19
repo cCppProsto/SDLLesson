@@ -1,7 +1,7 @@
 #include "application.hpp"
 
 #include "settings.hpp"
-#include "SDLEngine.hpp"
+#include "sdlengine.hpp"
 
 //------------------------------------------------------------------------------
 application &application::instace()

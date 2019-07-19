@@ -2,7 +2,7 @@
 #include <string>
 
 #include "application.hpp"
-#include "SDLEngine.hpp"
+#include "sdlengine.hpp"
 
 int main(int argc, char* args[])
 {

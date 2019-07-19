@@ -1,5 +1,5 @@
 
-#include "SDLEngine.hpp"
+#include "sdlengine.hpp"
 #include "menu.hpp"
 
 menu::eItem operator++(menu::eItem &item)
@@ -173,22 +173,22 @@ void menu::_init_text()
   
   mv_items[0].loadFont("resources/fonts/a_Albionic.ttf", 32);
   mv_items[0].setColor(255, 0, 0);
-  mv_items[0].setText(u8"старт");
+  mv_items[0].setText(u8"СЃС‚Р°СЂС‚");
   mv_items[0].setAlpha(m_alpha_selected);
 
   mv_items[1].loadFont("resources/fonts/a_Albionic.ttf", 32);
   mv_items[1].setColor(255, 0, 0);
-  mv_items[1].setText(u8"настройки");
+  mv_items[1].setText(u8"РЅР°СЃС‚СЂРѕР№РєРё");
   mv_items[1].setAlpha(m_alpha_unselected);
 
   mv_items[2].loadFont("resources/fonts/a_Albionic.ttf", 32);
   mv_items[2].setColor(255, 0, 0);
-  mv_items[2].setText(u8"авторы");
+  mv_items[2].setText(u8"Р°РІС‚РѕСЂС‹");
   mv_items[2].setAlpha(m_alpha_unselected);
 
   mv_items[3].loadFont("resources/fonts/a_Albionic.ttf", 32);
   mv_items[3].setColor(255, 0, 0);
-  mv_items[3].setText(u8"выход");
+  mv_items[3].setText(u8"РІС‹С…РѕРґ");
   mv_items[3].setAlpha(m_alpha_unselected);
 
   int y = SDLEngine::instance().windowWidth() * 0.25;
