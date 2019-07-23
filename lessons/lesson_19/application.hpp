@@ -4,6 +4,7 @@
 #include <SDL_events.h>
 
 #include "menu.hpp"
+#include "game.hpp"
 
 class application
 {
@@ -42,6 +43,7 @@ private:
   uint8_t m_background_b{ 0 };
 
   menu m_menu;
+  game m_game;
 };
 
 #endif /* _APPLICATION_HPP_ */

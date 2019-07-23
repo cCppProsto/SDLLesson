@@ -134,6 +134,7 @@ void application::_handle_keyboard_event_menu(const SDL_KeyboardEvent &aEvent)
 //------------------------------------------------------------------------------
 void application::_handle_keyboard_event_main(const SDL_KeyboardEvent &aEvent)
 {
+  m_game.handle_keyboard_event(aEvent);
 }
 
 

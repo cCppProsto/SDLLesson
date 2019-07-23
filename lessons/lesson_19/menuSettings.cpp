@@ -125,7 +125,7 @@ void menuSettings::_init()
   int y = sdl_inst.windowHeight() * 0.4;
   for (auto &i : mv_items)
   {
-    int x = 50;
+    int x = sdl_inst.windowWidth() / 2 - i.width() - 20;
     i.setPos(x, y);
     y += i.height() * 2;
   }
@@ -138,33 +138,17 @@ void menuSettings::_init_resolution_items()
 {
   auto &sdl_inst{ SDLEngine::instance() };
 
-  mv_resolutions_items.resize(3);
+  mv_resolutions_items.resize(settings::instance().mv_resolutions.size());
+  for(size_t i = 0; i < mv_resolutions_items.size(); ++i)
   {
-    mv_resolutions_items[0].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_resolutions_items[0].setColor(255, 0, 0);
-    mv_resolutions_items[0].setText(u8"640x480");
-    mv_resolutions_items[0].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_resolutions_items[0].width() - 20;
-    mv_resolutions_items[0].setPos(x, mv_items[0].y());
+    mv_resolutions_items[i].loadFont("resources/fonts/a_Albionic.ttf", 25);
+    mv_resolutions_items[i].setColor(255, 0, 0);
+    mv_resolutions_items[i].setText(settings::instance().mv_resolutions[i].second);
+    mv_resolutions_items[i].setAlpha(m_alpha_unselected);
+    int x = sdl_inst.windowWidth() / 2 + 20 ;
+    mv_resolutions_items[i].setPos(x, mv_items[0].y());
   }
 
-  {
-    mv_resolutions_items[1].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_resolutions_items[1].setColor(255, 0, 0);
-    mv_resolutions_items[1].setText(u8"800x600");
-    mv_resolutions_items[1].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_resolutions_items[1].width() - 20;
-    mv_resolutions_items[1].setPos(x, mv_items[0].y());
-  }
-
-  {
-    mv_resolutions_items[2].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_resolutions_items[2].setColor(255, 0, 0);
-    mv_resolutions_items[2].setText(u8"1920x1080");
-    mv_resolutions_items[2].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_resolutions_items[2].width() - 20;
-    mv_resolutions_items[2].setPos(x, mv_items[0].y());
-  }
   _update_resolution_select();
 }
 //------------------------------------------------------------------------------
@@ -172,118 +156,17 @@ void menuSettings::_init_audio_level_items()
 {
   auto &sdl_inst{ SDLEngine::instance() };
 
-  mv_audio_levels_items.resize(11);
-  size_t index{ 0 };
+  mv_audio_levels_items.resize(settings::instance().mv_audio_effect_levels.size());
+  for (size_t i = 0; i < mv_audio_levels_items.size(); ++i)
   {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"0   %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
+    mv_audio_levels_items[i].loadFont("resources/fonts/a_Albionic.ttf", 25);
+    mv_audio_levels_items[i].setColor(255, 0, 0);
+    mv_audio_levels_items[i].setText(settings::instance().mv_audio_effect_levels[i].second);
+    mv_audio_levels_items[i].setAlpha(m_alpha_unselected);
+    int x = sdl_inst.windowWidth() / 2 + 20;
+    mv_audio_levels_items[i].setPos(x, mv_items[1].y());
   }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"10  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"20  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"30  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"40  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"50  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"60  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"70  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"80  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"90  %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
-  {
-    mv_audio_levels_items[index].loadFont("resources/fonts/a_Albionic.ttf", 25);
-    mv_audio_levels_items[index].setColor(255, 0, 0);
-    mv_audio_levels_items[index].setText(u8"100 %");
-    mv_audio_levels_items[index].setAlpha(m_alpha_unselected);
-    int x = sdl_inst.windowWidth() - mv_audio_levels_items[index].width() - 20;
-    mv_audio_levels_items[index].setPos(x, mv_items[1].y());
-    index++;
-  }
-
+ 
   _update_audio_level_select();
 }
 //------------------------------------------------------------------------------

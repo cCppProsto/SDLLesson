@@ -73,7 +73,6 @@ SDLEngine::SDLEngine()
   g_window_width = settings::instance().screenWidth();
   g_window_height = settings::instance().screenHeight();
 
-
   m_is_inited = true;
 }
 //------------------------------------------------------------------------------
@@ -197,6 +196,8 @@ void SDLEngine::createWindow()
     m_last_error += SDL_GetError();
     return;
   }
+
+  SDL_SetWindowFullscreen(g_p_window, SDL_WINDOW_FULLSCREEN);
 
   g_p_renderer = SDL_CreateRenderer(g_p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if (g_p_renderer == nullptr)

@@ -57,11 +57,10 @@ private:
   eItem m_current_item{ eItem::VideoResolution };
 
   std::vector<TextureText> mv_items;
-
   std::vector<TextureText> mv_resolutions_items;
-  TextureText *mp_resolution_item{ nullptr };
-
   std::vector<TextureText> mv_audio_levels_items;
+
+  TextureText *mp_resolution_item{ nullptr };
   TextureText *mp_audio_level_item{ nullptr };
 };
 

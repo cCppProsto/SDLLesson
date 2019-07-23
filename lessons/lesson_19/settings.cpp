@@ -2,51 +2,6 @@
 #include "settings.hpp"
                      
 
-/*
-sResolution m_resolutions[3] =
-{
-  settings::eResolution::r640_480,   "640x480",
-  settings::eResolution::r800_600,   "800x600",
-  settings::eResolution::r1920_1080, "1920x1080"
-};
-
-sAudioLevel m_resolutions[10] =
-{
-  settings::eAudioLevel::l10,   "10",
-  settings::eAudioLevel::l20,   "20",
-  settings::eAudioLevel::l30,   "30",
-  settings::eAudioLevel::l40,   "40",
-  settings::eAudioLevel::l50,   "50",
-  settings::eAudioLevel::l60,   "60",
-  settings::eAudioLevel::l70,   "70",
-  settings::eAudioLevel::l80,   "80",
-  settings::eAudioLevel::l90,   "90",
-  settings::eAudioLevel::l100,  "100"
-};
-*/
-
-
-settings::eResolution operator++(settings::eResolution &item)
-{
-  item = settings::eResolution(int(item) + 1);
-
-  if (item > settings::eResolution::r1920_1080)
-    item = settings::eResolution::r1920_1080;
-
-  return item;
-}
-
-settings::eResolution operator--(settings::eResolution &item)
-{
-  item = settings::eResolution(int(item) - 1);
-
-  if (item > settings::eResolution::r1920_1080)
-    item = settings::eResolution::r640_480;
-
-  return item;
-}
-
-
 //------------------------------------------------------------------------------
 settings &settings::instance()
 {
@@ -95,7 +50,6 @@ void settings::_load()
           m_file >> val;
           m_audio_level = intToAudioLevel(val);
         }
-
       }
     }
   }
@@ -103,6 +57,15 @@ void settings::_load()
 //------------------------------------------------------------------------------
 void settings::_save()
 {
+  if (m_file.is_open())
+  {
+    m_file.close();
+    std::ofstream file;
+    file.open("settings.stg", std::ifstream::binary | std::ifstream::trunc);
+    file << videoResolutionToInt(m_resolution) << std::endl;
+    file << audioLevelToInt(m_audio_level) << std::endl;
+    file.close();
+  }
 }
 //------------------------------------------------------------------------------
 const settings::eAudioLevel &settings::audioLevel()const
@@ -119,9 +82,7 @@ bool settings::setNextAudioLevel()
 {
   if (m_audio_level == settings::eAudioLevel::l100)
     return false;
-
   m_audio_level = settings::eAudioLevel(int(m_audio_level) + 1);
-
   return true;
 }
 //------------------------------------------------------------------------------
@@ -135,7 +96,7 @@ bool settings::setPrevAudioLevel()
 //------------------------------------------------------------------------------
 bool settings::setNextVideoResolution()
 {
-  if (m_resolution == settings::eResolution::r1920_1080)
+  if (int(m_resolution) == int(settings::eResolution::resolutionEnd) - 1)
     return false;
   m_resolution = settings::eResolution(int(m_resolution) + 1);
   return true;
@@ -143,7 +104,7 @@ bool settings::setNextVideoResolution()
 //------------------------------------------------------------------------------
 bool settings::setPrevVideoResolution()
 {
-  if (m_resolution == settings::eResolution::r640_480)
+  if (int(m_resolution) == 0)
     return false;
   m_resolution = settings::eResolution(int(m_resolution) - 1);
   return true;
@@ -153,16 +114,16 @@ int settings::audioLevelToInt(settings::eAudioLevel aLevel)
 {
   switch (aLevel)
   {
-    case settings::eAudioLevel::l0: { return 0; }
-    case settings::eAudioLevel::l10: { return 13; }
-    case settings::eAudioLevel::l20: { return 26; }
-    case settings::eAudioLevel::l30: { return 38; }
-    case settings::eAudioLevel::l40: { return 51; }
-    case settings::eAudioLevel::l50: { return 64; }
-    case settings::eAudioLevel::l60: { return 77; }
-    case settings::eAudioLevel::l70: { return 90; }
-    case settings::eAudioLevel::l80: { return 102; }
-    case settings::eAudioLevel::l90: { return 115; }
+    case settings::eAudioLevel::l0:   { return 0; }
+    case settings::eAudioLevel::l10:  { return 13; }
+    case settings::eAudioLevel::l20:  { return 26; }
+    case settings::eAudioLevel::l30:  { return 38; }
+    case settings::eAudioLevel::l40:  { return 51; }
+    case settings::eAudioLevel::l50:  { return 64; }
+    case settings::eAudioLevel::l60:  { return 77; }
+    case settings::eAudioLevel::l70:  { return 90; }
+    case settings::eAudioLevel::l80:  { return 102; }
+    case settings::eAudioLevel::l90:  { return 115; }
     case settings::eAudioLevel::l100: { return 128; }
   }
   return 0;
@@ -194,11 +155,11 @@ int settings::videoResolutionToInt(settings::eResolution aResolution)
 //------------------------------------------------------------------------------
 settings::eResolution settings::intToVideoResolution(int aResolution)
 {
-  if (aResolution >= static_cast<int>(settings::eResolution::r1920_1080))
-    return settings::eResolution::r1920_1080;
+  if (aResolution >= static_cast<int>(settings::eResolution::resolutionEnd))
+    return  settings::eResolution(int(settings::eResolution::resolutionEnd) - 1);
 
-  if (aResolution < static_cast<int>(settings::eResolution::r640_480))
-    return settings::eResolution::r640_480;
+  if (aResolution < 0)
+    return  settings::eResolution(0);
 
   return settings::eResolution(int(aResolution));
 }
@@ -207,9 +168,22 @@ int settings::screenWidth()const
 {
   switch (m_resolution)
   {
-    case eResolution::r640_480:   return 640;
-    case eResolution::r800_600:   return 800;
+    case eResolution::r640_480: return 640;
+    case eResolution::r800_600: return 800;
+    case eResolution::r960_540: return 960;
+    case eResolution::r1024_600: return 1024;
+    case eResolution::r1024_768: return 1024;
+    case eResolution::r1280_720: return 1280;
+    case eResolution::r1280_768: return 1280;
+    case eResolution::r1280_1024: return 1280;
+    case eResolution::r1440_900: return 1440;
+    case eResolution::r1400_1050: return 1440;
+    case eResolution::r1440_1080: return 1440;
+    case eResolution::r1600_1024: return 1600;
+    case eResolution::r1600_1200: return 1600;
+    case eResolution::r1680_1050: return 1680;
     case eResolution::r1920_1080: return 1920;
+    case eResolution::r1920_1200: return 1920;
   }
   return 640;
 }
@@ -218,9 +192,22 @@ int settings::screenHeight()const
 {
   switch (m_resolution)
   {
-  case eResolution::r640_480:   return 480;
-  case eResolution::r800_600:   return 600;
-  case eResolution::r1920_1080: return 1080;
+    case eResolution::r640_480: return 480;
+    case eResolution::r800_600: return 600;
+    case eResolution::r960_540: return 540;
+    case eResolution::r1024_600: return 600;
+    case eResolution::r1024_768: return 768;
+    case eResolution::r1280_720: return 720;
+    case eResolution::r1280_768: return 768;
+    case eResolution::r1280_1024: return 1024;
+    case eResolution::r1440_900: return 900;
+    case eResolution::r1400_1050: return 1050;
+    case eResolution::r1440_1080: return 1080;
+    case eResolution::r1600_1024: return 1024;
+    case eResolution::r1600_1200: return 1200;
+    case eResolution::r1680_1050: return 1050;
+    case eResolution::r1920_1080: return 1080;
+    case eResolution::r1920_1200: return 1200;
   }
   return 480;
 }
