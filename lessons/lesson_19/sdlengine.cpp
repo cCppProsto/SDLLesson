@@ -199,12 +199,31 @@ void SDLEngine::createWindow()
 
   //SDL_SetWindowFullscreen(g_p_window, SDL_WINDOW_FULLSCREEN);
 
-  g_p_renderer = SDL_CreateRenderer(g_p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  if(m_vsynk_is_available)
+    g_p_renderer = SDL_CreateRenderer(g_p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  else
+    g_p_renderer = SDL_CreateRenderer(g_p_window, -1, SDL_RENDERER_ACCELERATED);
+
   if (g_p_renderer == nullptr)
   {
     m_last_error += SDL_GetError();
     return;
   }
+}
+//------------------------------------------------------------------------------
+const bool &SDLEngine::vsync_is_enabled()const
+{
+  return m_vsynk_is_available;
+}
+//------------------------------------------------------------------------------
+const uint32_t &SDLEngine::screen_fps()const
+{
+  return m_screen_fps;
+}
+//------------------------------------------------------------------------------
+const uint32_t &SDLEngine::screen_tick_per_fps()const
+{
+  return m_screen_tick_per_fps;
 }
 //------------------------------------------------------------------------------
 SDL_Renderer *SDLEngine::renderer()

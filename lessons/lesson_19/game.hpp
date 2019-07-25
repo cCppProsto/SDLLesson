@@ -5,6 +5,7 @@
 #include <SDL_events.h>
 
 #include "texturetext.hpp"
+#include "timer.hpp"
 
 class game
 {
@@ -35,13 +36,8 @@ private:
   bool m_is_exit{ false };
   bool m_is_pause{ false };
 
-  uint32_t m_start_game_ticks{ 0 };
-  uint32_t m_game_ticks{0};
-  uint32_t m_game_common_ticks{ 0 };
-
-  uint32_t m_start_pause_ticks{ 0 };
-  uint32_t m_pause_ticks{ 0 };
-  uint32_t m_pause_common_ticks{ 0 };
+  timer m_timer_game;
+  timer m_timer_pause;
 
   TextureText m_pause_ticks_texture;
   TextureText m_game_ticks_texture;

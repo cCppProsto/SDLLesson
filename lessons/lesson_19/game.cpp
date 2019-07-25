@@ -33,7 +33,6 @@ void game::_load_textures()
   m_ms_game_text_texture.setAlpha(180);
   m_ms_game_text_texture.setPos(300, 100);
 
-
   m_pause_ticks_texture.loadFont("resources/fonts/a_Albionic.ttf", 32);
   m_pause_ticks_texture.setColor(125, 30, 80);
   m_pause_ticks_texture.setText("0");
@@ -76,15 +75,13 @@ void game::process()
 {
   if (m_is_run)
   {
-    m_game_ticks = m_game_common_ticks + SDL_GetTicks() - m_start_game_ticks;
-    m_game_ticks_texture.setText(std::to_string(m_game_ticks));
+    m_game_ticks_texture.setText(std::to_string(m_timer_game.ticks()));
     return;
   }
 
   if (m_is_pause)
   {
-    m_pause_ticks = m_pause_common_ticks + SDL_GetTicks() - m_start_pause_ticks;
-    m_pause_ticks_texture.setText(std::to_string(m_pause_ticks));
+    m_pause_ticks_texture.setText(std::to_string(m_timer_pause.ticks()));
     return;
   }
 }
@@ -118,12 +115,11 @@ void game::_handle_keyboard_event_run(const SDL_KeyboardEvent &aEvent)
       {
         case SDLK_ESCAPE:
         {
+          m_timer_game.pause();
+          m_timer_pause.start();
+
           m_is_pause = true;
           m_is_run   = false;
-          m_game_common_ticks = m_game_ticks;
-          m_game_ticks = 0;
-
-          m_start_pause_ticks = SDL_GetTicks();
           break;
         }
         case SDLK_DOWN:
@@ -159,13 +155,12 @@ void game::_handle_keyboard_event_pause(const SDL_KeyboardEvent &aEvent)
         }
         case SDLK_RETURN:
         {
+          m_timer_game.start();
+          m_timer_pause.pause();
+
           m_is_pause = false;
           m_is_run = true;
           m_is_exit = false;
-          m_start_game_ticks = SDL_GetTicks();
-
-          m_pause_common_ticks = m_pause_ticks;
-          m_pause_ticks = 0;
           break;
         }
       }
@@ -190,13 +185,10 @@ void game::init()
   m_is_pause = false;
   m_is_run = true;
 
-  m_game_ticks = 0;
-  m_game_common_ticks = 0;
-  m_start_game_ticks = SDL_GetTicks();
+  m_timer_game.reset();
+  m_timer_game.start();
 
-  m_pause_ticks = 0;
-  m_pause_common_ticks = 0;
-  m_start_pause_ticks = SDL_GetTicks();
+  m_timer_pause.reset();
 
   m_game_ticks_texture.setText("0");
   m_pause_ticks_texture.setText("0");

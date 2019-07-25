@@ -33,6 +33,11 @@ public:
 
   void setAudioVolume(settings::eAudioLevel aVolume);
 
+  const bool &vsync_is_enabled()const;
+
+  const uint32_t &screen_fps()const;
+  const uint32_t &screen_tick_per_fps()const;
+
 private:
   SDLEngine();
   ~SDLEngine();
@@ -42,6 +47,11 @@ private:
 
 private:
   bool m_is_inited{ false };
+  bool m_vsynk_is_available{ false };
+
+  const uint32_t m_screen_fps{ 60 };
+  const uint32_t m_screen_tick_per_fps{ 1000 / m_screen_fps };
+
   std::string m_last_error;
 
   Mix_Chunk *mp_sound_menu_game_start{ nullptr };
