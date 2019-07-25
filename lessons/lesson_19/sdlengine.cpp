@@ -197,7 +197,7 @@ void SDLEngine::createWindow()
     return;
   }
 
-  SDL_SetWindowFullscreen(g_p_window, SDL_WINDOW_FULLSCREEN);
+  //SDL_SetWindowFullscreen(g_p_window, SDL_WINDOW_FULLSCREEN);
 
   g_p_renderer = SDL_CreateRenderer(g_p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if (g_p_renderer == nullptr)

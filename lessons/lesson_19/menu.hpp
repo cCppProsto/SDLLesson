@@ -28,11 +28,13 @@ public:
   void process();
   void handle_keyboard_event(const SDL_KeyboardEvent &aEvent);
 
+  void reset_flags();
+
   const bool &isExit()const;
+  const bool &isGameStart()const;
 
 private:
   void _init_text();
-  void _load_sound();
   void _change_state();
 
 private:

@@ -84,5 +84,40 @@ const std::string &strResources::level_sound_u8()
   return res;
 #endif
 }
+//------------------------------------------------------------------------------
+const std::string &strResources::pause_text_u8()
+{
+#ifdef _WIN32
+  static std::string res{ wstrtostr(L"пауза") };
+  return res;
+#else
+  static std::string res{ u8"пауза" };
+  return res;
+#endif
+}
+//------------------------------------------------------------------------------
+const std::string &strResources::game_text_u8()
+{
+#ifdef _WIN32
+  static std::string res{ wstrtostr(L"игра") };
+  return res;
+#else
+  static std::string res{ u8"игра" };
+  return res;
+#endif
+}
+//------------------------------------------------------------------------------
+const std::string &strResources::ms_text_u8()
+{
+#ifdef _WIN32
+  static std::string res{ wstrtostr(L"мс") };
+  return res;
+#else
+  static std::string res{ u8"мс" };
+  return res;
+#endif
+}
+
+
 
 

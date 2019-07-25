@@ -26,7 +26,6 @@ menu::eItem operator--(menu::eItem &item)
 menu::menu()
 {
   _init_text();
-  _load_sound();
 }
 //------------------------------------------------------------------------------
 menu::~menu()
@@ -203,10 +202,6 @@ void menu::_init_text()
   }
 }
 //------------------------------------------------------------------------------
-void menu::_load_sound()
-{
-}
-//------------------------------------------------------------------------------
 void menu::_change_state()
 {
   const auto &_sdl{ SDLEngine::instance() };
@@ -240,6 +235,19 @@ void menu::_change_state()
     }
   }
 }
+//------------------------------------------------------------------------------
+const bool &menu::isGameStart()const
+{
+  return m_is_start;
+}
+//------------------------------------------------------------------------------
+void menu::reset_flags()
+{
+  m_is_exit = false;
+  m_is_high_level = true;
+  m_is_start = false;
+}
+
 
 
 

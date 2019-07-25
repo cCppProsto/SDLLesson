@@ -75,6 +75,7 @@ void application::_process()
     }
     case eApplicationState::Main:
     {
+      m_game.process();
       break;
     }
   }
@@ -86,8 +87,6 @@ void application::_draw()
   SDL_SetRenderDrawColor(renderer, m_background_r, m_background_g, m_background_b, 0xFF);
   SDL_RenderClear(renderer);
 
-
-
   // draw all objects
   switch (m_state)
   {
@@ -98,6 +97,7 @@ void application::_draw()
     }
     case eApplicationState::Main:
     {
+      m_game.draw();
       break;
     }
   }
@@ -129,12 +129,25 @@ void application::_handle_keyboard_event_menu(const SDL_KeyboardEvent &aEvent)
   m_menu.handle_keyboard_event(aEvent);
 
   if (m_menu.isExit())
+  {
     m_is_run = false;
+  }
+  else if (m_menu.isGameStart())
+  {
+    m_menu.reset_flags();
+    m_game.init();
+    m_state = eApplicationState::Main;
+  }
 }
 //------------------------------------------------------------------------------
 void application::_handle_keyboard_event_main(const SDL_KeyboardEvent &aEvent)
 {
   m_game.handle_keyboard_event(aEvent);
+
+  if (m_game.isExit())
+  {
+    m_state = eApplicationState::Menu;
+  }
 }
 
 

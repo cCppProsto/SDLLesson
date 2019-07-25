@@ -74,6 +74,12 @@ void TextureText::setText(std::string text)
 {
   m_text = text;
 
+  if (mp_texture)
+  {
+    SDL_DestroyTexture(mp_texture);
+    mp_texture = nullptr;
+  }
+
   SDL_Surface* textSurface = TTF_RenderUTF8_Solid(mp_font, m_text.c_str(), m_color);
   if (textSurface != nullptr)
   {
